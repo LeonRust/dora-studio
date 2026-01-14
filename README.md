@@ -2,7 +2,7 @@
 
 > A GPU-accelerated native desktop dashboard for the Dora dataflow framework
 >
-> **100% Rust implementation** - No C/C++ dependencies
+> **100% Rust implementation** | **AI-powered** | **No C/C++ dependencies**
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2021-orange.svg)](https://www.rust-lang.org)
@@ -20,6 +20,7 @@ Replace command-line workflows with an intuitive dashboard that supports the ful
 | Log analysis | `dora logs -f` | Filtering, search, aggregation |
 | Performance monitoring | `dora top` | Time-series charts, historical trends |
 | Trace analysis | External Jaeger | Built-in, correlated with metrics |
+| **AI assistance** | Manual commands | Natural language: "Start the camera pipeline" |
 
 ## Mini-Apps
 
@@ -37,6 +38,31 @@ Real-time log streaming with filtering by dataflow, node, level, and text search
 ### 4. Telemetry Dashboard
 Full observability with metrics charts, distributed traces, and topic statistics.
 
+## AI Agent (Claude Code Style)
+
+Each mini-app includes a bottom chat bar for natural language interaction:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Dataflow Manager                        [Start] [Refresh]  │
+├─────────────────────────────────────────────────────────────┤
+│                      (main app content)                     │
+├─────────────────────────────────────────────────────────────┤
+│ 💬 Ask AI: [What's causing the high CPU usage?______] [↵]  │
+│                                                             │
+│ AI: The YOLO node is CPU-bound at 98%. Recommendations:    │
+│     1. Enable GPU inference  2. Use lighter model          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Example interactions:**
+- "Start the camera pipeline" → Starts dataflow, reports status
+- "Show me errors from the last hour" → Filters and displays logs
+- "What's the bottleneck?" → Analyzes metrics, identifies slow nodes
+- "Create a dataflow for pose detection" → Generates YAML
+
+**20+ AI tools** across all mini-apps for dataflow management, YAML editing, log analysis, and performance debugging. See [PRD.md](PRD.md#11-ai-agent-capabilities) for full details.
+
 ## Architecture
 
 ```
@@ -46,12 +72,13 @@ Full observability with metrics charts, distributed traces, and topic statistics
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────────┐ │
 │  │ Dataflow │  │  YAML    │  │   Log    │  │    Telemetry     │ │
 │  │ Manager  │  │  Editor  │  │  Viewer  │  │    Dashboard     │ │
+│  │ [💬 AI]  │  │ [💬 AI]  │  │ [💬 AI]  │  │    [💬 AI]       │ │
 │  └──────────┘  └──────────┘  └──────────┘  └──────────────────┘ │
 ├─────────────────────────────────────────────────────────────────┤
-│                     SHELL + SHARED WIDGETS                      │
+│              SHELL + SHARED WIDGETS + AI AGENT                  │
 ├─────────────────────────────────────────────────────────────────┤
-│         DORA CLIENT          │      EMBEDDED DB (DataFusion)    │
-└──────────────────────────────┴──────────────────────────────────┘
+│    DORA CLIENT    │   EMBEDDED DB   │   LLM CLIENT (Claude)    │
+└───────────────────┴─────────────────┴───────────────────────────┘
                     │
                     ▼
           Dora Coordinator + Daemon
@@ -59,7 +86,8 @@ Full observability with metrics charts, distributed traces, and topic statistics
 
 Key design decisions:
 - **100% Rust**: Pure Rust implementation with no C/C++ dependencies
-- **Self-contained**: Embedded DataFusion + Parquet storage, built-in OTLP receiver (no external dependencies)
+- **AI-powered**: Natural language interaction via bottom chat bar (Claude Code style)
+- **Self-contained**: Embedded DataFusion + Parquet storage, built-in OTLP receiver
 - **Plugin system**: Apps implement `DoraApp` trait (following mofa-studio patterns)
 - **Dark mode first**: GPU-accelerated theme with smooth transitions
 
@@ -77,13 +105,22 @@ Key design decisions:
 
 All dependencies are pure Rust with no C/C++ components:
 
-- **[Rust](https://www.rust-lang.org/)** - Systems programming language
-- **[Makepad](https://github.com/makepad/makepad)** - GPU-accelerated UI framework (pure Rust)
-- **[Apache Arrow DataFusion](https://github.com/apache/datafusion)** - SQL query engine (pure Rust)
-- **[Apache Arrow](https://arrow.apache.org/)** - Columnar memory format (pure Rust)
-- **[Parquet](https://github.com/apache/arrow-rs/tree/master/parquet)** - Columnar file storage (pure Rust)
-- **[Tokio](https://tokio.rs/)** - Async runtime (pure Rust)
-- **[Tonic](https://github.com/hyperium/tonic)** - gRPC for OTLP receiver (pure Rust)
+**UI & Runtime:**
+- **[Makepad](https://github.com/makepad/makepad)** - GPU-accelerated UI framework
+- **[Tokio](https://tokio.rs/)** - Async runtime
+
+**Storage & Query:**
+- **[Apache Arrow DataFusion](https://github.com/apache/datafusion)** - SQL query engine
+- **[Apache Arrow](https://arrow.apache.org/)** - Columnar memory format
+- **[Parquet](https://github.com/apache/arrow-rs/tree/master/parquet)** - Columnar file storage
+
+**AI Agent:**
+- **[Claude API](https://docs.anthropic.com/)** - Primary LLM provider (tool use)
+- **[OpenAI API](https://platform.openai.com/)** - Fallback provider
+- **[Ollama](https://ollama.ai/)** - Local LLM option (privacy mode)
+
+**Telemetry:**
+- **[Tonic](https://github.com/hyperium/tonic)** - gRPC for OTLP receiver
 
 > **Note**: We deliberately avoid DuckDB (which has a C++ core) to maintain a 100% Rust codebase.
 
