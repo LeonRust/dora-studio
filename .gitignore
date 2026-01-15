@@ -14,3 +14,6 @@ Thumbs.db
 
 # Cargo lock (workspace)
 # Cargo.lock
+
+# Session notes (local only, not tracked)
+SESSION_NOTES.md
