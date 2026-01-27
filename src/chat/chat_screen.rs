@@ -89,22 +89,6 @@ live_design! {
         show_bg: true
         draw_bg: { color: (BG_COLOR) }
 
-        // Header
-        <RoundedView> {
-            width: Fill, height: 56
-            draw_bg: { color: (HEADER_COLOR) }
-            padding: { left: 20, right: 20 }
-            align: { y: 0.5 }
-
-            <Label> {
-                draw_text: {
-                    text_style: { font_size: 18.0 }
-                    color: #ffffff
-                }
-                text: "Dora Studio"
-            }
-        }
-
         // Status bar
         status_label = <Label> {
             width: Fill, height: Fit

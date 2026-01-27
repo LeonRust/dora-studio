@@ -1,6 +1,6 @@
 use makepad_widgets::*;
-use std::cell::RefMut;
 use serde::Deserialize;
+use std::cell::RefMut;
 
 live_design! {
     use link::theme::*;
@@ -49,7 +49,7 @@ live_design! {
                 color: (HEADER_TEXT),
                 text_style: { font_size: 16.0 }
             }
-            text: "Dataflows"
+            text: "Dora Studio"
         }
 
         <View> { width: Fill, height: Fit }
@@ -69,9 +69,10 @@ live_design! {
         draw_bg: { color: #f1f5f9 }
         padding: { left: 16, right: 16 }
         align: { y: 0.5 }
+        spacing: 8
 
         <Label> {
-            width: 120, height: Fit
+            width: 90, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
@@ -79,7 +80,7 @@ live_design! {
             text: "UUID"
         }
         <Label> {
-            width: 160, height: Fit
+            width: Fill, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
@@ -87,7 +88,7 @@ live_design! {
             text: "NAME"
         }
         <Label> {
-            width: 100, height: Fit
+            width: 70, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
@@ -95,17 +96,7 @@ live_design! {
             text: "STATUS"
         }
         <Label> {
-            width: 60, height: Fit
-            align: { x: 1.0 }
-            draw_text: {
-                color: (TEXT_SECONDARY),
-                text_style: { font_size: 11.0 }
-            }
-            text: "NODES"
-        }
-        <Label> {
-            width: 80, height: Fit
-            align: { x: 1.0 }
+            width: 50, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
@@ -113,17 +104,15 @@ live_design! {
             text: "CPU"
         }
         <Label> {
-            width: 80, height: Fit
-            align: { x: 1.0 }
+            width: 60, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
             }
-            text: "MEMORY"
+            text: "MEM"
         }
         <Label> {
-            width: Fill, height: Fit
-            align: { x: 1.0 }
+            width: 110, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
@@ -164,56 +153,47 @@ live_design! {
         draw_bg: { color: (ROW_BG) }
         padding: { left: 16, right: 16 }
         align: { y: 0.5 }
+        spacing: 8
 
         uuid_label = <Label> {
-            width: 120, height: Fit
+            width: 90, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
             }
         }
         name_label = <Label> {
-            width: 160, height: Fit
+            width: Fill, height: Fit
             draw_text: {
                 color: (TEXT_PRIMARY),
                 text_style: { font_size: 12.0 }
             }
         }
         status_label = <Label> {
-            width: 100, height: Fit
+            width: 70, height: Fit
             draw_text: {
                 color: (STATUS_RUNNING),
                 text_style: { font_size: 12.0 }
             }
         }
-        nodes_label = <Label> {
-            width: 60, height: Fit
-            align: { x: 1.0 }
-            draw_text: {
-                color: (TEXT_PRIMARY),
-                text_style: { font_size: 12.0 }
-            }
-        }
         cpu_label = <Label> {
-            width: 80, height: Fit
-            align: { x: 1.0 }
+            width: 50, height: Fit
             draw_text: {
-                color: (TEXT_PRIMARY),
-                text_style: { font_size: 12.0 }
+                color: (TEXT_SECONDARY),
+                text_style: { font_size: 11.0 }
             }
         }
         memory_label = <Label> {
-            width: 80, height: Fit
-            align: { x: 1.0 }
+            width: 60, height: Fit
             draw_text: {
-                color: (TEXT_PRIMARY),
-                text_style: { font_size: 12.0 }
+                color: (TEXT_SECONDARY),
+                text_style: { font_size: 11.0 }
             }
         }
 
         // Action buttons container
         actions = <View> {
-            width: Fill, height: Fit
+            width: 110, height: Fit
             flow: Right
             align: { x: 1.0, y: 0.5 }
             spacing: 4
@@ -223,9 +203,6 @@ live_design! {
             }
             destroy_button = <ActionButton> {
                 text: "Kill"
-            }
-            logs_button = <ActionButton> {
-                text: "Logs"
             }
         }
     }
@@ -238,56 +215,47 @@ live_design! {
         draw_bg: { color: (ROW_ALT_BG) }
         padding: { left: 16, right: 16 }
         align: { y: 0.5 }
+        spacing: 8
 
         uuid_label = <Label> {
-            width: 120, height: Fit
+            width: 90, height: Fit
             draw_text: {
                 color: (TEXT_SECONDARY),
                 text_style: { font_size: 11.0 }
             }
         }
         name_label = <Label> {
-            width: 160, height: Fit
+            width: Fill, height: Fit
             draw_text: {
                 color: (TEXT_PRIMARY),
                 text_style: { font_size: 12.0 }
             }
         }
         status_label = <Label> {
-            width: 100, height: Fit
+            width: 70, height: Fit
             draw_text: {
                 color: (STATUS_RUNNING),
                 text_style: { font_size: 12.0 }
             }
         }
-        nodes_label = <Label> {
-            width: 60, height: Fit
-            align: { x: 1.0 }
-            draw_text: {
-                color: (TEXT_PRIMARY),
-                text_style: { font_size: 12.0 }
-            }
-        }
         cpu_label = <Label> {
-            width: 80, height: Fit
-            align: { x: 1.0 }
+            width: 50, height: Fit
             draw_text: {
-                color: (TEXT_PRIMARY),
-                text_style: { font_size: 12.0 }
+                color: (TEXT_SECONDARY),
+                text_style: { font_size: 11.0 }
             }
         }
         memory_label = <Label> {
-            width: 80, height: Fit
-            align: { x: 1.0 }
+            width: 60, height: Fit
             draw_text: {
-                color: (TEXT_PRIMARY),
-                text_style: { font_size: 12.0 }
+                color: (TEXT_SECONDARY),
+                text_style: { font_size: 11.0 }
             }
         }
 
         // Action buttons container
         actions = <View> {
-            width: Fill, height: Fit
+            width: 110, height: Fit
             flow: Right
             align: { x: 1.0, y: 0.5 }
             spacing: 4
@@ -297,9 +265,6 @@ live_design! {
             }
             destroy_button = <ActionButton> {
                 text: "Kill"
-            }
-            logs_button = <ActionButton> {
-                text: "Logs"
             }
         }
     }
@@ -440,10 +405,10 @@ impl DataflowInfo {
 pub enum DataflowTableAction {
     None,
     Refresh,
-    Stop(String),      // uuid
-    Destroy(String),   // uuid
-    ViewLogs(String),  // uuid
-    SelectRow(usize),  // row index
+    Stop(String),     // uuid
+    Destroy(String),  // uuid
+    ViewLogs(String), // uuid
+    SelectRow(usize), // row index
 }
 
 /// Loading state for the table
@@ -457,11 +422,16 @@ pub enum TableLoadingState {
 
 #[derive(Live, LiveHook, Widget)]
 pub struct DataflowTable {
-    #[deref] view: View,
-    #[rust] dataflows: Vec<DataflowInfo>,
-    #[rust] loading_state: TableLoadingState,
-    #[rust] selected_row: Option<usize>,
-    #[rust] error_message: String,
+    #[deref]
+    view: View,
+    #[rust]
+    dataflows: Vec<DataflowInfo>,
+    #[rust]
+    loading_state: TableLoadingState,
+    #[rust]
+    selected_row: Option<usize>,
+    #[rust]
+    error_message: String,
 }
 
 impl Widget for DataflowTable {
@@ -482,7 +452,10 @@ impl Widget for DataflowTable {
 
 impl WidgetMatchEvent for DataflowTable {
     fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions, scope: &mut Scope) {
-        log!("[DataflowTable] handle_actions called, actions count: {}", actions.len());
+        log!(
+            "[DataflowTable] handle_actions called, actions count: {}",
+            actions.len()
+        );
 
         // Handle refresh button
         let refresh_btn = self.view.button(id!(refresh_button));
@@ -490,12 +463,11 @@ impl WidgetMatchEvent for DataflowTable {
         log!("[DataflowTable] refresh_button exists: {}", btn_exists);
 
         if refresh_btn.clicked(actions) {
-            log!("[DataflowTable] Refresh button clicked! widget_uid={:?}", self.widget_uid());
-            cx.widget_action(
-                self.widget_uid(),
-                &scope.path,
-                DataflowTableAction::Refresh,
+            log!(
+                "[DataflowTable] Refresh button clicked! widget_uid={:?}",
+                self.widget_uid()
             );
+            cx.widget_action(self.widget_uid(), &scope.path, DataflowTableAction::Refresh);
         }
 
         // Handle row action buttons via PortalList
@@ -600,8 +572,11 @@ impl DataflowTable {
     }
 
     fn draw_rows(&mut self, cx: &mut Cx2d, list: &mut RefMut<PortalList>) {
-        log!("[DataflowTable] draw_rows called, loading_state={:?}, dataflows.len()={}",
-             self.loading_state, self.dataflows.len());
+        log!(
+            "[DataflowTable] draw_rows called, loading_state={:?}, dataflows.len()={}",
+            self.loading_state,
+            self.dataflows.len()
+        );
 
         // Show loading state
         if self.loading_state == TableLoadingState::Loading {
@@ -650,12 +625,19 @@ impl DataflowTable {
                 item.label(id!(uuid_label)).set_text(cx, &df.uuid_short());
                 item.label(id!(name_label)).set_text(cx, &df.name);
                 item.label(id!(status_label)).set_text(cx, &df.status);
-                item.label(id!(nodes_label)).set_text(cx, &df.nodes.to_string());
                 item.label(id!(cpu_label)).set_text(cx, &df.cpu_formatted());
-                item.label(id!(memory_label)).set_text(cx, &df.memory_formatted());
+                item.label(id!(memory_label))
+                    .set_text(cx, &df.memory_formatted());
 
-                log!("[DataflowTable] Drawing row {}: uuid={}, name={}, status={}",
-                     item_id, df.uuid_short(), df.name, df.status);
+                log!(
+                    "[DataflowTable] Drawing row {}: uuid={}, name={}, status={}, cpu={}, mem={}",
+                    item_id,
+                    df.uuid_short(),
+                    df.name,
+                    df.status,
+                    df.cpu_formatted(),
+                    df.memory_formatted()
+                );
 
                 item.draw_all(cx, &mut Scope::empty());
             }
@@ -666,7 +648,10 @@ impl DataflowTable {
 impl DataflowTableRef {
     /// Set the dataflows to display
     pub fn set_dataflows(&self, cx: &mut Cx, dataflows: Vec<DataflowInfo>) {
-        log!("[DataflowTableRef] set_dataflows called with {} items", dataflows.len());
+        log!(
+            "[DataflowTableRef] set_dataflows called with {} items",
+            dataflows.len()
+        );
         if let Some(mut inner) = self.borrow_mut() {
             log!("[DataflowTableRef] borrow_mut succeeded, setting dataflows");
             inner.set_dataflows(cx, dataflows);

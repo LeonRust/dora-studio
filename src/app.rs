@@ -2,6 +2,9 @@ use makepad_widgets::*;
 use crate::dataflow::{DataflowInfo, DataflowTableWidgetRefExt};
 use crate::tools::execute_tool;
 
+// Auto-refresh interval in seconds
+const AUTO_REFRESH_INTERVAL: f64 = 5.0;
+
 live_design! {
     use link::theme::*;
     use link::shaders::*;
@@ -21,34 +24,35 @@ live_design! {
                 window: { title: "Dora Studio" }
                 body = <View> {
                     width: Fill, height: Fill
-                    flow: Right
+                    flow: Down
                     show_bg: true
                     draw_bg: { color: (MAIN_BG) }
 
-                    // Left panel - Chat
+                    // Top panel - Dataflow Table
                     <View> {
-                        width: 400, height: Fill
+                        width: Fill, height: Fill
+                        flow: Down
+                        align: { x: 0.0, y: 0.0 }
+                        padding: { top: 0, left: 16, right: 16, bottom: 16 }
+
+                        dataflow_table = <DataflowTable> {}
+                    }
+
+                    // Divider line
+                    <View> {
+                        width: Fill, height: 1
+                        show_bg: true
+                        draw_bg: { color: (DIVIDER_COLOR) }
+                    }
+
+                    // Bottom panel - Chat
+                    <View> {
+                        width: Fill, height: 300
                         flow: Down
                         show_bg: true
                         draw_bg: { color: #ffffff }
 
                         <ChatScreen> {}
-                    }
-
-                    // Divider
-                    <View> {
-                        width: 1, height: Fill
-                        show_bg: true
-                        draw_bg: { color: (DIVIDER_COLOR) }
-                    }
-
-                    // Right panel - Dataflow Table
-                    <View> {
-                        width: Fill, height: Fill
-                        flow: Down
-                        padding: { top: 16, left: 16, right: 16, bottom: 16 }
-
-                        dataflow_table = <DataflowTable> {}
                     }
                 }
             }
@@ -66,6 +70,8 @@ pub struct App {
     next_frame: NextFrame,
     #[rust]
     initialized: bool,
+    #[rust]
+    last_refresh_time: f64,
 }
 
 impl LiveRegister for App {
@@ -117,13 +123,24 @@ impl AppMain for App {
     fn handle_event(&mut self, cx: &mut Cx, event: &Event) {
         self.match_event(cx, event);
 
-        // Handle next frame for delayed initialization
-        if self.next_frame.is_event(event).is_some() {
+        // Handle next frame for initialization and auto-refresh
+        if let Some(ne) = self.next_frame.is_event(event) {
             if !self.initialized {
                 self.initialized = true;
+                self.last_refresh_time = ne.time;
                 log!("[App] Initializing dataflow table on first frame");
                 self.refresh_dataflows(cx);
+            } else {
+                // Check if it's time for auto-refresh
+                let elapsed = ne.time - self.last_refresh_time;
+                if elapsed >= AUTO_REFRESH_INTERVAL {
+                    self.last_refresh_time = ne.time;
+                    log!("[App] Auto-refresh triggered after {:.1}s", elapsed);
+                    self.refresh_dataflows(cx);
+                }
             }
+            // Schedule the next frame to keep auto-refresh running
+            self.next_frame = cx.new_next_frame();
         }
 
         self.ui.handle_event(cx, event, &mut Scope::empty());
