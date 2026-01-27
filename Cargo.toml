@@ -44,23 +44,12 @@ chrono = "0.4"
 product_name = "Dora Studio"
 identifier = "com.mofa.dora-studio"
 category = "Utility"
-
-[package.metadata.packager.macos]
-signature_identity = "-"
-
-before-packaging-command = """
-robius-packaging-commands before-packaging \
-    --binary-name dora-studio \
-    --path-to-binary ./target/release/dora-studio
-"""
-
-before-each-package-command = """
-robius-packaging-commands before-each-package \
-    --binary-name dora-studio \
-    --path-to-binary ./target/release/dora-studio
-"""
-
+before_packaging_command = "robius-packaging-commands before-packaging --binary-name dora-studio --path-to-binary ./target/release/dora-studio"
+before_each_package_command = "robius-packaging-commands before-each-package --binary-name dora-studio --path-to-binary ./target/release/dora-studio"
 resources = [
     { src = "./dist/resources/makepad_widgets", target = "makepad_widgets" },
     { src = "./dist/resources/dora_studio", target = "dora_studio" },
 ]
+
+[package.metadata.packager.macos]
+signing_identity = "-"
